@@ -29,7 +29,16 @@ class CreateNewUser implements CreatesNewUsers
         return User::create([
             'name' => $input['name'],
             'email' => $input['email'],
+            'type' => $input['type'],  // Adicionando o campo 'type'
             'password' => Hash::make($input['password']),
         ]);
+
+        if($input['type'] == 'user'){
+         $userInfo = UserDetails:: create([
+            'user_id' => $user->id,
+            'status' => 'active',
+         ]);
+        }
+
     }
 }

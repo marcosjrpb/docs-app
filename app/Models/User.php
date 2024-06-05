@@ -12,11 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens;
-    use HasFactory;
-    use HasProfilePhoto;
-    use Notifiable;
-    use TwoFactorAuthenticatable;
+    use HasApiTokens, HasFactory, HasProfilePhoto, Notifiable, TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -25,7 +21,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'type' // adicionei esse type para difereciar os usuarios e os medicos
+        'type', // adicionei esse type para diferenciar os usuarios e os medicos
         'email',
         'password',
     ];
@@ -60,11 +56,13 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    pubçlic function doctor(){
-     return $this->hasOne(Doctor::class, 'doc_id');
+    public function doctor()
+    {
+        return $this->hasOne(Doctor::class, 'doc_id');
     }
 
-    pubçlic function user_details(){
-      return $this->hasOne(UserDetails::class, 'user_id');
-     }
+    public function user_details()
+    {
+        return $this->hasOne(UserDetails::class, 'user_id');
+    }
 }

@@ -1,6 +1,8 @@
 @extends('adminlte::page')
 
-@section('title','Home')
+
+@section('title','home')
+
 
 @section('content_header')
 
@@ -9,4 +11,6 @@
 @stop
  @section('content')
   <p>Aqui ficara o conteudo!</p>
+
  @stop
+
