@@ -2,22 +2,31 @@
 
 namespace App\Actions\Fortify;
 
+use App\Models\Doctor;
 use App\Models\User;
+use App\Models\UserDetails;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
 
+// Esta classe é para registrar um novo usuário/doutor
+
 class CreateNewUser implements CreatesNewUsers
 {
-    use PasswordValidationRules;
+    // Regras de validação de senha se o trait não estiver disponível
+    protected function passwordRules()
+    {
+        return ['required', 'string', new \Laravel\Fortify\Rules\Password, 'confirmed'];
+    }
 
     /**
-     * Validate and create a newly registered user.
+     * Validar e criar um novo usuário registrado.
      *
-     * @param  array<string, string>  $input
+     * @param  array  $input
+     * @return \App\Models\User
      */
-    public function create(array $input): User
+    public function create(array $input)
     {
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
@@ -26,19 +35,25 @@ class CreateNewUser implements CreatesNewUsers
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
 
-        return User::create([
+        $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
-            'type' => $input['type'],  // Adicionando o campo 'type'
+            'type' => $input['type'], // assumindo que o tipo é passado no input
             'password' => Hash::make($input['password']),
         ]);
 
-        if($input['type'] == 'user'){
-         $userInfo = UserDetails:: create([
-            'user_id' => $user->id,
-            'status' => 'active',
-         ]);
+        if ($input['type'] === 'doctor') {
+            Doctor::create([
+                'doc_id' => $user->id,
+                'status' => 'active',
+            ]);
+        } elseif ($input['type'] === 'user') {
+            UserDetails::create([
+                'user_id' => $user->id,
+                'status' => 'active',
+            ]);
         }
 
+        return $user;
     }
 }

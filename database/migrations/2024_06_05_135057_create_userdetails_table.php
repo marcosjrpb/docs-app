@@ -13,17 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('userdetails', function (Blueprint $table) {
-             $table->increments('id'); // Chave primária auto-incrementada
-                       $table->unsignedInteger('user_id')->unique(); // Chave estrangeira única referenciando 'users'
-                       $table->longText('bio_data')->nullable(); // Biografia detalhada do doutor
-                       $table->string('status')->nullable(); // Status atual do doutor
+        Schema::create('user_details', function (Blueprint $table) {
+            $table->increments('id'); // Chave primária auto-incrementada
+            $table->unsignedInteger('user_id')->unique(); // Chave estrangeira única referenciando 'users'
+            $table->longText('bio_data')->nullable(); // Biografia detalhada do doutor
+            $table->string('status')->nullable(); // Status atual do doutor
 
-                       // Definição da chave estrangeira referenciando 'id' na tabela 'users'
-                       $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            // Definição da chave estrangeira referenciando 'id' na tabela 'users'
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-                       // Criação de colunas 'created_at' e 'updated_at'
-                       $table->timestamps();
+            // Criação de colunas 'created_at' e 'updated_at'
+            $table->timestamps();
         });
     }
 
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('userdetails');
+        Schema::dropIfExists('user_details');
     }
 };

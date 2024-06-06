@@ -5,15 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserDetails extends Model
+class Doctor extends Model
 {
     use HasFactory;
 
     //these are fillable input
     protected $fillable = [
-        'user_id',
+        'doc_id',
+        'category',
+        'patients',
+        'experience',
         'bio_data',
-        'fav',
         'status',
     ];
 
