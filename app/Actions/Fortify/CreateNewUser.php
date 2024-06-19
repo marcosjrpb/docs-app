@@ -10,18 +10,14 @@ use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
 
-// Esta classe é para registrar um novo usuário/doutor
+//this is to register new user/doctor
 
 class CreateNewUser implements CreatesNewUsers
 {
-    // Regras de validação de senha se o trait não estiver disponível
-    protected function passwordRules()
-    {
-        return ['required', 'string', new \Laravel\Fortify\Rules\Password, 'confirmed'];
-    }
+    use PasswordValidationRules;
 
     /**
-     * Validar e criar um novo usuário registrado.
+     * Validate and create a newly registered user.
      *
      * @param  array  $input
      * @return \App\Models\User
@@ -42,11 +38,10 @@ class CreateNewUser implements CreatesNewUsers
             'password' => Hash::make($input['password']),
         ]);
 
-
-            $doctorInfo =Doctor::create([
-                'doc_id' => $user->id,
-                'status' => 'active',
-            ]);
+        $doctorInfo = Doctor::create([
+            'doc_id' => $user->id,
+            'status' => 'active'
+        ]);
 
         return $user;
     }

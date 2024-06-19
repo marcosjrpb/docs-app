@@ -70,7 +70,7 @@ class UsersController extends Controller
         //check password
         if(!$user || ! Hash::check($reqeust->password, $user->password)){
             throw ValidationException::withMessages([
-                'email'=>['The provided credentials are incorrect'],
+                'email'=>['As credenciais fornecidas estão incorretas'],
             ]);
         }
 
